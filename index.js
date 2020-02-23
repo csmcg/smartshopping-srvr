@@ -5,6 +5,7 @@ const port = 3000
 app.use(express.json());
 
 app.post('/', (req, res) => {
+	console.log('received');
 	console.log(res.json(req.body));
 });
 
