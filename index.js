@@ -1,8 +1,11 @@
 const express = require('express')
 const app = express()
-const port = 3000
 const trilat = require('node-trilateration')
 const _ = require('lodash');
+const netinfo = require('./netinfo.js');
+
+const port = netinfo.serverPort;
+const serverIP = netinfo.serverIP;
 
 const beacon_locs = [
 	{minor:		1,
@@ -10,30 +13,46 @@ const beacon_locs = [
 		 y:		0,
 	distance:	null},
 	{minor:	2,
-		x: 3.22,
+		x: 3.35,
 		y: 2.1,
 		distance: null},
 	{minor: 3,
-		x: 4.78,
-		y: 3.45,
+		x: 4.95,
+		y: 3.9,
 		distance: null},
 	{minor: 4,
-		x: 3.22,
-		y: 4.8,
+		x: 3.35,
+		y: 5.7,
 		distance: null},
 	{minor: 5,
-		x: 4.78,
-		y: 6.15,
+		x: 4.95,
+		y: 7.45,
 		distance: null},
 	{minor: 6,
 		x: 4,
-		y: 7.7,
+		y: 8.55,
+		distance: null},
+	{minor: 7,
+		x: 6.6,
+		y: 3.35,
+		distance: null},
+	{minor: 8,
+		x:	6.6,
+		y:  5.7,
+		distance: null},
+	{minor: 9,
+		x: 1.7,
+		y: 3.9,
+		distance: null},
+	{minor: 10,
+		x:	1.7,
+		y:	7.45,
 		distance: null}
 ];
 
 // path loss vals from run1
 const n = 2;
-const power_at_1 = 65;
+const power_at_1 = 77;
 
 const getDistance = (rssi) => {
 	return (10 ** ((rssi + power_at_1) / (n * -10)));
@@ -65,4 +84,4 @@ app.post('/', (req, res) => {
 	res.send("ok");
 });
 
-app.listen(port, '10.42.0.1', () => console.log(`Listening on port ${port}`));
+app.listen(port, serverIP, () => console.log(`Listening on port ${port}`));
