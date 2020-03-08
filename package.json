@@ -4,15 +4,18 @@
   "description": "server to smartshopping ee499",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+	"start": "node -r esm index.js"
   },
   "author": "ee499 team5",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "esm": "^3.2.25",
     "express": "^4.17.1",
     "kalmanjs": "^1.1.0",
     "lodash": "^4.17.15",
+    "multilateration": "^0.5.0",
     "node-trilateration": "^1.0.0"
   }
 }
