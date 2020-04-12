@@ -18,7 +18,7 @@ const kalmanModel = {
 	//u:	1	  // set to 1 if moving, 0 if static
 };
 
-const beacon_locs = [
+/*const beacon_locs = [
 	{minor:		1,
 		 x:		0,
 		 y:		2.7,
@@ -59,15 +59,59 @@ const beacon_locs = [
 		x:	3.15,
 		y:	0,
 		distance: null}
+];*/
+const beacon_locs = [
+	{minor:		1,
+		 x:		2.25,
+		 y:		0.3,
+	distance:	null},
+	{minor:	2,
+		x: 0,
+		y: 1.05,
+		distance: null},
+	{minor: 3,
+		x: 2.25,
+		y: 1.8,
+		distance: null},
+	{minor: 4,
+		x: 2.25,
+		y: 3.15,
+		distance: null},
+	{minor: 5,
+		x: 3.9,
+		y: 2.55,
+		distance: null},
+	{minor: 6,
+		x: 2.25,
+		y: 5.1,
+		distance: null},
+	{minor: 7,
+		x: 0,
+		y: 4.2,
+		distance: null},
+	{minor: 8,
+		x:	3.9,
+		y:  4.2,
+		distance: null},
+	{minor: 9,
+		x: 0,
+		y: 2.55,
+		distance: null},
+	{minor: 10,
+		x:	3.9,
+		y:	1.05,
+		distance: null}
 ];
-
-let filters = [];
+/*let filters = [];
 for (let i = 0; i < 10; i++) {
 	filters.push(new kalmanFilter(kalmanModel));
-}
+}*/
+
+let xFilter = new kalmanFilter(kalmanModel);
+let yFilter = new kalmanFilter(kalmanModel);
 
 // path loss vals from run1
-const n = 1.831;
+const n = 2;
 const power_at_1 = 59;
 // room dims
 const max_x = 5.0;
@@ -77,11 +121,10 @@ const getDistance = (rssi, minor) => {
 	var d = (10 ** ((rssi + power_at_1) / (n * -10)));
 	//d = filters[minor - 1].filter(d);
 	return d;
-
 }
 
 const getLoc = (sample) => {
-	sample = _.sortBy(sample, ['rssi']).splice(sample.length - 7, 7);; // get 3 strongest signals
+	sample = _.sortBy(sample, ['rssi']).splice(sample.length - 4, 4);; // get 3 strongest signals
 	let beacons = [];
 	sample.forEach((b) => {
 		let reference = beacon_locs[b['minor'] - 1];
@@ -93,7 +136,9 @@ const getLoc = (sample) => {
 	});
 	//console.log(beacons);
 	let loc = locate(beacons);
-	console.log(`(${_.round(loc.x, 2)}, ${_.round(loc.y, 2)})`);
+	let x = xFilter.filter(loc.x);
+	let y = yFilter.filter(loc.y);
+	console.log(`(${_.round(x, 2)}, ${_.round(y, 2)})`);
 }	
 
 app.use(express.json());
