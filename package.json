@@ -14,7 +14,7 @@
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "kalmanjs": "^1.1.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "multilateration": "^0.5.0",
     "node-trilateration": "^1.0.0"
   }
